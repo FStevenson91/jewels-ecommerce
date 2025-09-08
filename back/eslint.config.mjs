@@ -3,13 +3,15 @@ import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import eslintConfigPrettier from 'eslint-config-prettier'; // Importa eslint-config-prettier
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs'],
+    ignores: ['eslint.config.mjs', 'dist', 'test'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  eslintConfigPrettier, // Añade eslint-config-prettier para desactivar reglas conflictivas
   eslintPluginPrettierRecommended,
   {
     languageOptions: {
@@ -28,7 +30,15 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto',
+        },
+      ],
+
+      'linebreak-style': 'off',
     },
   },
 );
