@@ -32,7 +32,18 @@ export class CategoriesController {
     description: 'The category has been successfully created.',
     type: Category,
   })
-  @ApiBody({ type: CreateCategoryDto })
+  @ApiBody({
+    type: CreateCategoryDto,
+    examples: {
+      a: {
+        summary: 'Example Category Creation',
+        value: {
+          name: 'Books',
+          description: 'All types of literary works.',
+        },
+      },
+    },
+  })
   create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(createCategoryDto);
   }
@@ -49,7 +60,11 @@ export class CategoriesController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a single category by ID' })
-  @ApiParam({ name: 'id', description: 'The UUID of the category' })
+  @ApiParam({
+    name: 'id',
+    description: 'The UUID of the category',
+    example: 'b1c2d3e4-f5a6-7b8c-9d0e-1f2a3b4c5d6e',
+  })
   @ApiOkResponse({
     description: 'Successfully retrieved the category.',
     type: Category,
@@ -61,13 +76,27 @@ export class CategoriesController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing category' })
-  @ApiParam({ name: 'id', description: 'The UUID of the category' })
+  @ApiParam({
+    name: 'id',
+    description: 'The UUID of the category',
+    example: 'b1c2d3e4-f5a6-7b8c-9d0e-1f2a3b4c5d6e',
+  })
   @ApiOkResponse({
     description: 'The category has been successfully updated.',
     type: Category,
   })
   @ApiNotFoundResponse({ description: 'Category not found' })
-  @ApiBody({ type: UpdateCategoryDto })
+  @ApiBody({
+    type: UpdateCategoryDto,
+    examples: {
+      a: {
+        summary: 'Example Category Update',
+        value: {
+          name: 'Fiction',
+        },
+      },
+    },
+  })
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -77,7 +106,11 @@ export class CategoriesController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a category by ID' })
-  @ApiParam({ name: 'id', description: 'The UUID of the category' })
+  @ApiParam({
+    name: 'id',
+    description: 'The UUID of the category',
+    example: 'b1c2d3e4-f5a6-7b8c-9d0e-1f2a3b4c5d6e',
+  })
   @ApiOkResponse({ description: 'The category has been successfully deleted.' })
   @ApiNotFoundResponse({ description: 'Category not found' })
   remove(@Param('id') id: string): Promise<void> {

@@ -13,9 +13,6 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.orders)
-  user: User;
-
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   totalPrice: number;
 
@@ -24,6 +21,9 @@ export class Order {
 
   @Column({ default: 'pending' })
   status: string; // e.g., 'pending', 'shipped', 'delivered'
+
+  @ManyToOne(() => User, (user) => user.orders)
+  user: User;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
   items: OrderItem[];
