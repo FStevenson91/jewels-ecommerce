@@ -9,14 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginUserDto = void 0;
+exports.CreateUserDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class LoginUserDto {
+class CreateUserDto {
+    name;
     email;
     password;
 }
-exports.LoginUserDto = LoginUserDto;
+exports.CreateUserDto = CreateUserDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Provide the user name.',
+        example: 'John Doe',
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Length)(3, 80),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Must be a valid email.',
@@ -26,19 +37,14 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
-], LoginUserDto.prototype, "email", void 0);
+], CreateUserDto.prototype, "email", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'The password must contain at least one capital letter, one number, and one of these symbols: !@#$%^&*',
         example: 'JohnDoe.13!',
     }),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(8),
-    (0, class_validator_1.MaxLength)(15),
-    (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.])(.{8,15})$/, {
-        message: 'La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial.',
-    }),
+    (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,15}$/),
     __metadata("design:type", String)
-], LoginUserDto.prototype, "password", void 0);
-//# sourceMappingURL=login.dto.js.map
+], CreateUserDto.prototype, "password", void 0);
+//# sourceMappingURL=create-register-user.dto.js.map

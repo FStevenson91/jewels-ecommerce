@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerMiddleware } from 'src/middleware/logger.middleware';
 import { DataSourceOptions } from 'typeorm';
 import TypeOrmConfig from 'src/Config/TypeOrm.config';
+import { AuthModule } from './Modules/Auth/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import TypeOrmConfig from 'src/Config/TypeOrm.config';
     CategoriesModule,
     CartModule,
     AdminModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

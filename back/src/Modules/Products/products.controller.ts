@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -15,17 +16,25 @@ import {
   ApiOkResponse,
   ApiParam,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { CreateProductDto } from './dto/create-user.dto';
 import { UpdateProductDto } from './dto/update-user.dto';
 import { Product } from './entities/products.entity';
 import { ProductsService } from './products.service';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles } from '../Auth/decorators/roles.decorator';
+import { Role } from '../Users/user.enum';
+import { RolesGuard } from '../Auth/Guards/roles.guard';
 
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Role.Admin)
+  @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'Create a new product' })
   @ApiCreatedResponse({

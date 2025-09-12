@@ -19,6 +19,10 @@ const create_user_dto_1 = require("./dto/create-user.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const products_entity_1 = require("./entities/products.entity");
 const products_service_1 = require("./products.service");
+const passport_1 = require("@nestjs/passport");
+const roles_decorator_1 = require("../Auth/decorators/roles.decorator");
+const user_enum_1 = require("../Users/user.enum");
+const roles_guard_1 = require("../Auth/Guards/roles.guard");
 let ProductsController = class ProductsController {
     productsService;
     constructor(productsService) {
@@ -42,6 +46,9 @@ let ProductsController = class ProductsController {
 };
 exports.ProductsController = ProductsController;
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(user_enum_1.Role.Admin),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Create a new product' }),
     (0, swagger_1.ApiCreatedResponse)({

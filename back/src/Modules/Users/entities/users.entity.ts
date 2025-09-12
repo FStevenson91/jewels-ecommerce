@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Cart } from 'src/Modules/Cart/entities/cart.entity';
 import { Order } from 'src/Modules/Orders/entities/orders.entity';
+import { Role } from '../user.enum';
 
 @Entity()
 export class User {
@@ -22,8 +23,13 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'user' })
-  role: string;
+  @Column({
+    type: 'enum',
+    enum: Role,
+    array: true,
+    default: [Role.User],
+  })
+  roles: Role[];
 
   @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;

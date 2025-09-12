@@ -13,12 +13,13 @@ exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const cart_entity_1 = require("../../Cart/entities/cart.entity");
 const orders_entity_1 = require("../../Orders/entities/orders.entity");
+const user_enum_1 = require("../user.enum");
 let User = class User {
     id;
     name;
     email;
     password;
-    role;
+    roles;
     cart;
     orders;
 };
@@ -40,9 +41,14 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: 'user' }),
-    __metadata("design:type", String)
-], User.prototype, "role", void 0);
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: user_enum_1.Role,
+        array: true,
+        default: [user_enum_1.Role.User],
+    }),
+    __metadata("design:type", Array)
+], User.prototype, "roles", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => cart_entity_1.Cart, (cart) => cart.user),
     __metadata("design:type", cart_entity_1.Cart)
