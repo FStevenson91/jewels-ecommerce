@@ -49,7 +49,7 @@ __decorate([
         type: users_entity_1.User,
     }),
     (0, swagger_1.ApiBody)({
-        type: create_user_dto_1.CreateUserDto,
+        type: create_user_dto_1.CreateUserDtos,
         examples: {
             a: {
                 summary: 'Example User Creation',
@@ -63,7 +63,7 @@ __decorate([
     }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDtos]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
 __decorate([
