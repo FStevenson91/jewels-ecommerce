@@ -1,22 +1,12 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  Param,
-  Patch,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Body, Get, Param, Patch, Delete } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
-  ApiCreatedResponse,
   ApiOkResponse,
   ApiNotFoundResponse,
   ApiBody,
   ApiParam,
 } from '@nestjs/swagger';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/users.entity';
 import { UsersService } from './users.service';
@@ -25,29 +15,6 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Post()
-  @ApiOperation({ summary: 'Create a new user' })
-  @ApiCreatedResponse({
-    description: 'The user has been successfully created.',
-    type: User,
-  })
-  @ApiBody({
-    type: CreateUserDto,
-    examples: {
-      a: {
-        summary: 'Example User Creation',
-        value: {
-          name: 'Jane Doe',
-          email: 'jane.doe@example.com',
-          password: 'password123',
-        },
-      },
-    },
-  })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
 
   @Get()
   @ApiOperation({ summary: 'Retrieve all users' })

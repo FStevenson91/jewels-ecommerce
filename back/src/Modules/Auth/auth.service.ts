@@ -10,8 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/create-register-user.dto';
-import { LoginUserDto } from './dto/login.dto';
+import { CreateUserDto, LoginDto } from './dto/auth.dto';
 import { User } from '../Users/entities/users.entity';
 import { Role } from 'src/Modules/Users/user.enum';
 
@@ -25,8 +24,8 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto) {
     try {
-      const user = await this.userRepository.findOne({
-        where: { email: createUserDto.email },
+      const user = await this.userRepository.findOneBy({
+        email: createUserDto.email,
       });
       if (user) {
         throw new BadRequestException('El usuario ya está registrado');
@@ -38,29 +37,32 @@ export class AuthService {
       );
       const newUser = this.userRepository.create({
         ...createUserDto,
-        password: hashedPassword,
+        password: hashedPassword, // reemplazamos la contraseña por la hasheada
         roles: [Role.User], // Asignamos el rol 'User' por defecto
       });
 
       await this.userRepository.save(newUser);
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password: _, ...result } = newUser;
-      return { message: 'Usuario registrado exitosamente', data: result };
+      const { password: _, ...userWhitoutPassword } = newUser;
+      return {
+        message: 'Usuario registrado exitosamente',
+        data: userWhitoutPassword,
+      };
     } catch {
       throw new InternalServerErrorException('Error al registrar el usuario');
     }
   }
 
-  async login(loginUserDto: LoginUserDto) {
-    const user = await this.userRepository.findOne({
-      where: { email: loginUserDto.email },
+  async login(loginDto: LoginDto) {
+    const user: User | null = await this.userRepository.findOneBy({
+      email: loginDto.email,
     });
     if (!user) {
       throw new NotFoundException('Credenciales incorrectas');
     }
 
-    const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
+    const isMatch = await bcrypt.compare(loginDto.password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException('Credenciales incorrectas');
     }

@@ -1,8 +1,7 @@
 // src/auth/auth.controller.ts
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dto/create-register-user.dto';
-import { LoginUserDto } from './dto/login.dto';
+import { CreateUserDto, LoginDto } from './dto/auth.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -17,7 +16,7 @@ import {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post('register') //localhost:3001/auth/register
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Registrar un nuevo usuario',
@@ -42,8 +41,8 @@ export class AuthController {
   })
   @ApiOkResponse({ description: 'Inicio de sesión exitoso.' })
   @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
-  @ApiBody({ type: LoginUserDto })
-  async login(@Body() loginUserDto: LoginUserDto) {
+  @ApiBody({ type: LoginDto })
+  async login(@Body() loginUserDto: LoginDto) {
     return this.authService.login(loginUserDto);
   }
 }
